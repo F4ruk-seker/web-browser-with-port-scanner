@@ -14,6 +14,9 @@ class MyWebBrowser(QMainWindow):
 
         self.window = QWidget()
         self.window.setWindowTitle(config.BROWSER_NAME)
+        # self.window.addAction()
+        self.window.keyPressEvent = self.keyPressEvent
+
         self.browser = QWebEngineView()
 
         self.layout = QVBoxLayout()
@@ -75,6 +78,12 @@ class MyWebBrowser(QMainWindow):
         self.window.setLayout(self.layout)
         self.window.show()
         self.load_css()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_F5:
+            self.browser.reload()
+        if event.key() == Qt.Key_Backspace:
+            self.browser.back()
 
     def on_url_bar_enter_pressed(self):
         self.trigger_go_btn()
