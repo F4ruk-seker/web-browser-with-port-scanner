@@ -11,3 +11,9 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
+
+## app
+![img.png](preview/img.png)
+
+## port scanner
+![img.png](preview/scanner.png)
