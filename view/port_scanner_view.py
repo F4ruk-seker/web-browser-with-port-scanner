@@ -160,14 +160,14 @@ class PortScanWindow(QMainWindow):
 
     def cancel_scan(self):
         if self.worker_thread:
-            self.update_scan_progress_status(0)
+            # self.update_scan_progress_status(0)
             self.worker_thread.stop()
 
     def scan_finished(self, *args, **kwargs):
-        self.update_scan_progress_status(0)
+        # self.update_scan_progress_status(0)
         self.start_scan_btn.setDisabled(False)
         self.stop_scan_btn.setDisabled(True)
-        self.label.setText("Durum: İşlem tamamlandı")
+        self.label.setText("Durum: Task Completed")
 
     def update_status(self, status):
         status = status.split('@')

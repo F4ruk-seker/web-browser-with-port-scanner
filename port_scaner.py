@@ -46,6 +46,7 @@ class PortScanner(QThread):
             self.progress.emit(f"error@<span style='color:red'>Unknown ERROR check logs </span>")
             self.logger.error(exception)
         finally:
+            self.progress_count.emit(0)
             self.logger.info('socket finally finished')
             self.finished.emit(1)
 
