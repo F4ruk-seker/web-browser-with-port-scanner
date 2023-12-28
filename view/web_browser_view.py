@@ -1,8 +1,9 @@
 import validators
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
+from urllib.parse import urlparse
+
 from .port_scanner_view import PortScanWindow
 import config
 
@@ -19,7 +20,7 @@ class MyWebBrowser(QMainWindow):
         self.horizontal = QHBoxLayout()
 
         # horizontal > layout
-        self.url_bar = QTextEdit()
+        self.url_bar = QLineEdit()
         self.url_bar.setMinimumHeight(30)
         self.url_bar.setMaximumHeight(30)
 
@@ -66,7 +67,7 @@ class MyWebBrowser(QMainWindow):
         self.layout.addLayout(self.horizontal)
         self.layout.addWidget(self.browser)
 
-        self.window.setLayout(self.horizontal)
+        # self.window.setLayout(self.horizontal)
 
         self.go_home_page()
         self.window.setLayout(self.layout)
@@ -77,7 +78,7 @@ class MyWebBrowser(QMainWindow):
         self.url_bar.setText(url.toString())
 
     def trigger_go_btn(self, *args, **kwargs):
-        url = self.url_bar.toPlainText()
+        url = self.url_bar.text()
         if not validators.url(url):  # eğer girdi url değil ise
             if validators.url('https://' + url):  # eğer girdi https eklendipinde url ise
                 url = 'https://' + url
@@ -90,9 +91,7 @@ class MyWebBrowser(QMainWindow):
         self.browser.setUrl(QUrl("https://duckduckgo.com/"))
 
     def open_port_scanner(self):
-        from urllib.parse import urlparse
-
-        url = self.url_bar.toPlainText()
+        url = self.url_bar.text()
         url = urlparse(url)
         port_scan_window = PortScanWindow(self, target=url.hostname)
         port_scan_window.show()

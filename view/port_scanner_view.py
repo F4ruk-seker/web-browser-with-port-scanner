@@ -17,17 +17,19 @@ class PortScanWindow(QMainWindow):
         self.set_known_ports_btn = QPushButton("KNOWN PORTS")
         self.set_known_ports_btn.setMinimumHeight(30)
         self.set_known_ports_btn.setMaximumHeight(30)
+        self.set_known_ports_btn.setMaximumWidth(150)
         self.set_known_ports_btn.clicked.connect(self.set_known_ports)
 
         self.set_all_ports_btn = QPushButton("ALL PORTS")
         self.set_all_ports_btn.setMinimumHeight(30)
         self.set_all_ports_btn.setMaximumHeight(30)
+        self.set_all_ports_btn.setMaximumWidth(140)
         self.set_all_ports_btn.clicked.connect(self.set_all_ports)
 
         self.url_bar = QLineEdit()
         self.url_bar.setMinimumHeight(30)
         self.url_bar.setMaximumHeight(30)
-        self.url_bar.setMaximumWidth(200)
+        # self.url_bar.setMaximumWidth(200)
         self.url_bar.setText(self.target)
         self.url_bar.setPlaceholderText('enter a target')
 
@@ -58,11 +60,13 @@ class PortScanWindow(QMainWindow):
         self.start_scan_btn = QPushButton("START")
         self.start_scan_btn.setMinimumHeight(30)
         self.start_scan_btn.setMaximumHeight(30)
+        self.start_scan_btn.setMaximumWidth(100)
         self.start_scan_btn.clicked.connect(self.start_port_scan)
 
         self.stop_scan_btn = QPushButton("STOP")
         self.stop_scan_btn.setMinimumHeight(30)
         self.stop_scan_btn.setMaximumHeight(30)
+        self.stop_scan_btn.setMaximumWidth(100)
         self.stop_scan_btn.clicked.connect(self.cancel_scan)
         self.stop_scan_btn.setDisabled(True)
 
