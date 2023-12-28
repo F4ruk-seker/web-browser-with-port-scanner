@@ -21,6 +21,7 @@ class PortScanner(QThread):
         try:
             # target = socket.gethostbyname(self.target)
             self.progress.emit(f"task_start@Start Scan {datetime.today()}")
+            self.progress.emit(f'target@Target = <span style="color:cyan;">{self.target}</span>')
 
             for port in range(self.start_point, self.end_point):
                 if not self._is_running:
