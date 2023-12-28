@@ -148,9 +148,11 @@ class PortScanWindow(QMainWindow):
         self.start_scan_btn.setDisabled(True)
         self.stop_scan_btn.setDisabled(False)
 
+        target = self.url_bar.text()
+
         self.scan_progress_bar.setRange(int(self.start_port_point.text()), int(self.end_port_point.text()))
 
-        self.worker_thread = PortScanner(self.target, int(self.start_port_point.text()), int(self.end_port_point.text()))
+        self.worker_thread = PortScanner(target, int(self.start_port_point.text()), int(self.end_port_point.text()))
         self.worker_thread.finished.connect(self.scan_finished)
         self.worker_thread.progress.connect(self.update_status)
         self.worker_thread.progress_count.connect(self.update_scan_progress_status)
