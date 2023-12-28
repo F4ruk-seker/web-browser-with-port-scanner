@@ -29,7 +29,7 @@ class PortScanWindow(QMainWindow):
         self.url_bar = QLineEdit()
         self.url_bar.setMinimumHeight(30)
         self.url_bar.setMaximumHeight(30)
-        # self.url_bar.setMaximumWidth(200)
+        self.url_bar.setMinimumWidth(200)
         self.url_bar.setText(self.target)
         self.url_bar.setPlaceholderText('enter a target')
 
@@ -160,6 +160,7 @@ class PortScanWindow(QMainWindow):
 
     def cancel_scan(self):
         if self.worker_thread:
+            self.update_scan_progress_status(0)
             self.worker_thread.stop()
 
     def scan_finished(self, *args, **kwargs):
