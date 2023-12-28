@@ -7,6 +7,7 @@ import socket
 class PortScanner(QThread):
     finished = pyqtSignal(bool)
     progress = pyqtSignal(str)
+    progress_count = pyqtSignal(int)
 
     def __init__(self, target: str, start_point: int, end_point: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -33,6 +34,7 @@ class PortScanner(QThread):
                 else:
                     self.progress.emit(f"port_not_found@PORT:({port}):('<span style='color:brown'>NO RESPONSE</span>')")
                 s.close()
+                self.progress_count.emit(port)
         except KeyboardInterrupt:
             self.progress.emit(f"log@<span style='color:red'>Exiting Program !!!!</span>")
         except socket.gaierror:

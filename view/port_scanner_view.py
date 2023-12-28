@@ -89,8 +89,13 @@ class PortScanWindow(QMainWindow):
         self.founded_ports_log.setDisabled(True)
         self.founded_ports_log.setPlaceholderText('Founded Ports Log')
 
+        self.scan_progress_bar = QProgressBar()
+        self.scan_progress_bar.setMinimumHeight(20)
+        self.scan_progress_bar.setMaximumHeight(20)
+
         self.app_body.addWidget(self.scan_log)
         self.app_body.addWidget(self.founded_ports_log)
+        self.app_body.addWidget(self.scan_progress_bar)
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -100,7 +105,13 @@ class PortScanWindow(QMainWindow):
         self.layout.addLayout(self.app_body)
         # self.window.setLayout(self.horizontal)
 
-        self.label = QPushButton("Bu İkinci Pencere")
+        self.label = QTextEdit()
+        self.label.setDisabled(True)
+        self.label.setMinimumHeight(30)
+        self.label.setMaximumHeight(30)
+        self.label.setPlaceholderText('Durum :')
+        self.label.setStyleSheet("text-align: center")
+
         self.layout.addWidget(self.label)
 
         self.central_widget.setLayout(self.layout)
@@ -130,13 +141,19 @@ class PortScanWindow(QMainWindow):
         self.start_port_point.setText('1')
         self.end_port_point.setText('65536')
 
+    def update_scan_progress_status(self, status: int):
+        self.scan_progress_bar.setValue(status)
+
     def start_port_scan(self):
         self.start_scan_btn.setDisabled(True)
         self.stop_scan_btn.setDisabled(False)
 
-        self.worker_thread = PortScanner('localhost', int(self.start_port_point.text()), int(self.end_port_point.text()))
+        self.scan_progress_bar.setRange(int(self.start_port_point.text()), int(self.end_port_point.text()))
+
+        self.worker_thread = PortScanner(self.target, int(self.start_port_point.text()), int(self.end_port_point.text()))
         self.worker_thread.finished.connect(self.scan_finished)
         self.worker_thread.progress.connect(self.update_status)
+        self.worker_thread.progress_count.connect(self.update_scan_progress_status)
         self.worker_thread.start()
 
     def cancel_scan(self):
@@ -144,6 +161,7 @@ class PortScanWindow(QMainWindow):
             self.worker_thread.stop()
 
     def scan_finished(self, *args, **kwargs):
+        self.update_scan_progress_status(0)
         self.start_scan_btn.setDisabled(False)
         self.stop_scan_btn.setDisabled(True)
         self.label.setText("Durum: İşlem tamamlandı")
@@ -152,10 +170,7 @@ class PortScanWindow(QMainWindow):
         status = status.split('@')
         status_type = status[0]
         status_message = status[1]
-        print(f'"{status_type}"')
         if status_type == 'port_found':
-            print('girdi port_found')
-
             self.founded_ports_log.append(status_message)
         self.scan_log.append(status_message)
         self.label.setText(f"Durum: {status_message}")

@@ -5,5 +5,5 @@
     font-weight: bold;
 }
 QPushButton:disabled{
-    color:red
+    color:red;
 }
