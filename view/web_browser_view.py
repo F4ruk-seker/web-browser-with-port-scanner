@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
 from .port_scanner_view import PortScanWindow
+import config
 
 
 class MyWebBrowser(QMainWindow):
@@ -11,7 +12,7 @@ class MyWebBrowser(QMainWindow):
         super(MyWebBrowser, self).__init__(*args, **kwargs)
 
         self.window = QWidget()
-        self.window.setWindowTitle(" Web Browser")
+        self.window.setWindowTitle(config.BROWSER_NAME)
         self.browser = QWebEngineView()
 
         self.layout = QVBoxLayout()
@@ -97,11 +98,5 @@ class MyWebBrowser(QMainWindow):
         port_scan_window.show()
 
     def load_css(self):
-        style_sheet = """
-        background-color: #181818;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        """
-        self.setStyleSheet(style_sheet)
-        self.window.setStyleSheet(style_sheet)
+        self.setStyleSheet(config.APP_CSS)
+        self.window.setStyleSheet(config.APP_CSS)

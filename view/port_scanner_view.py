@@ -1,5 +1,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+
+import config
 from port_scaner import PortScanner
 
 
@@ -155,16 +157,5 @@ class PortScanWindow(QMainWindow):
         self.label.setText(f"Durum: {status_message}")
 
     def load_css(self):
-        style_sheet = """
-        *{
-        background-color: #181818;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        }
-        QPushButton:disabled{
-        color:red
-        }
-        """
-        self.setStyleSheet(style_sheet)
+        self.setStyleSheet(config.APP_CSS)
         # self.window.setStyleSheet(style_sheet)
