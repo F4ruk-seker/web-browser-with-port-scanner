@@ -23,6 +23,8 @@ class MyWebBrowser(QMainWindow):
         self.url_bar = QLineEdit()
         self.url_bar.setMinimumHeight(30)
         self.url_bar.setMaximumHeight(30)
+        self.url_bar.returnPressed.connect(self.on_url_bar_enter_pressed)
+        # self.url_bar.enterEvent(self.enter_event)
 
         self.go_btn = QPushButton("GO")
         self.go_btn.setMinimumHeight(30)
@@ -73,6 +75,9 @@ class MyWebBrowser(QMainWindow):
         self.window.setLayout(self.layout)
         self.window.show()
         self.load_css()
+
+    def on_url_bar_enter_pressed(self):
+        self.trigger_go_btn()
 
     def url_change(self, url):
         self.url_bar.setText(url.toString())
