@@ -11,7 +11,6 @@ logging.basicConfig(filename='web_browser.log', filemode='a+', format='%(name)s 
 
 DEBUG: bool = True
 
-__css_ref = open('style.css', 'r')
-APP_CSS: str = __css_ref.read()
-__css_ref.close()
+with open('style.css', 'r') as __css_ref:
+    APP_CSS: str = __css_ref.read()
 
