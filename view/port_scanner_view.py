@@ -147,7 +147,7 @@ class PortScanWindow(QMainWindow):
     def start_port_scan(self):
         self.start_scan_btn.setDisabled(True)
         self.stop_scan_btn.setDisabled(False)
-
+        self.founded_ports_log.clear()
         target = self.url_bar.text()
 
         self.scan_progress_bar.setRange(int(self.start_port_point.text()), int(self.end_port_point.text()))
