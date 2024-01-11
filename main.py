@@ -7,7 +7,7 @@ from multiprocessing import Process
 
 import config
 
-logger = getLogger('WebBrowser')
+logger = getLogger('WebBrowser')  #
 
 
 def start_browser():
