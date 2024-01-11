@@ -16,6 +16,9 @@ def detect_face_and_save_image():
 
     # kaynakdan görüntü yakalnadığı sürece devam et
     while cap:
+        if config.BROWSER_IS_STOP:
+            break
+
         # Kameradan kare al
         ret, frame = cap.read()
 

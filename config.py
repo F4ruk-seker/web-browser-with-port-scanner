@@ -35,3 +35,5 @@ with open('style.css', 'r') as __css_ref:
 SESSION_ID: str | None = None
 
 
+BROWSER_IS_STOP: bool = False
+

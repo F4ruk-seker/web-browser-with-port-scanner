@@ -4,6 +4,7 @@ import config
 from config import MONGO_DB_NAME, MONGO_DB_URL
 from datetime import datetime
 
+#  mongo db ile bağlantı kurulur
 mongo_client: MongoClient = MongoClient(MONGO_DB_URL)
 
 mydb = mongo_client[MONGO_DB_NAME]
@@ -15,21 +16,26 @@ def create_session(ip_data: dict):
 
 
 def add_browser_history(web_address) -> None:
-    SESSION_ID = get_session()
-    existing_object = mycol.find_one({"_id": SESSION_ID})
+    session_id = get_session()
+    existing_object = mycol.find_one({"_id": session_id})
 
     # Nesne varsa, listeye ekle
     if existing_object:
         browser_history_list = existing_object.get("browser_history", [])
         browser_history_list.append({"web": web_address, "date": str(datetime.today().strftime('%m/%d/%Y, %H:%M:%S'))})
-        mycol.update_one({"_id": SESSION_ID}, {"$set": {"browser_history": browser_history_list}})
+        mycol.update_one({"_id": session_id}, {"$set": {"browser_history": browser_history_list}})
         if config.DEBUG:
-            print(f"Object added to list for object with ID {SESSION_ID}")
+            print(f"Object added to list for object with ID {session_id}")
     else:
         if config.DEBUG:
             # Nesne yoksa, hata mesajı gönder
-            print(f"Object with ID {SESSION_ID} not found")
+            print(f"Object with ID {session_id} not found")
 
 
 def add_user_face_info(base64image):
     return ...
+
+
+def db_session_close():
+    mongo_client.close()
+

