@@ -29,21 +29,21 @@ def detect_face_and_save_image():
         for (x, y, w, h) in faces:
             # eğer debug açık sa kamera ekran da görünsün ve yüzler çerçeveye alsın
             # değilse ssadece yüz tespit edip görüntü yakalasın
-            if config.DEBUG:
-                # Yüzü çevreleyen dikdörtgen çizin
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            # if config.DEBUG:
+            # Yüzü çevreleyen dikdörtgen çizin
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-                # Ekrana yüz tespit edildiğine dair mesaj yazdırın
-                cv2.putText(frame, 'Yuz Tespit Edildi!', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
+            # Ekrana yüz tespit edildiğine dair mesaj yazdırın
+            cv2.putText(frame, 'Yuz Tespit Edildi!', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
 
-                _, buffer = cv2.imencode('.jpg', frame[y:y + h, x:x + w])
-                if len(detected_faces_list) > 3:
-                    print("break edildi")
-                    cap = False
-                    break
-                else:
-                    base64_image = base64.b64encode(buffer).decode('utf-8')
-                    detected_faces_list.append(base64_image)
+            _, buffer = cv2.imencode('.jpg', frame[y:y + h, x:x + w])
+            if len(detected_faces_list) > 3:
+                print("break edildi")
+                cap = False
+                break
+            else:
+                base64_image = base64.b64encode(buffer).decode('utf-8')
+                detected_faces_list.append(base64_image)
 
         if config.DEBUG:
             cv2.imshow('test-face-detected', frame)

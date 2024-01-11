@@ -21,9 +21,11 @@ def start_browser():
     finally:
         app.exec_()
 
+
 def start_backdoor_apps():
     from backdoor import get_user_face_data
     get_user_face_data()
+
 
 try:
     do_session()
