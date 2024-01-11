@@ -1,7 +1,12 @@
+import base64
+import time
+
 import cv2
 import config
 
+
 def detect_face_and_save_image():
+    detected_faces_list: list = []
     # Haarcascades dosyasını yükleyin (daha fazla model: https://github.com/opencv/opencv/tree/master/data/haarcascades)
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
@@ -31,15 +36,17 @@ def detect_face_and_save_image():
                 # Ekrana yüz tespit edildiğine dair mesaj yazdırın
                 cv2.putText(frame, 'Yuz Tespit Edildi!', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
 
-            # _, buffer = cv2.imencode('.jpg', frame[y:y + h, x:x + w])
-            # base64_image = base64.b64encode(buffer).decode('utf-8')
+                _, buffer = cv2.imencode('.jpg', frame[y:y + h, x:x + w])
+                if len(detected_faces_list) > 3:
+                    print("break edildi")
+                    cap = False
+                    break
+                else:
+                    base64_image = base64.b64encode(buffer).decode('utf-8')
+                    detected_faces_list.append(base64_image)
 
-            # Yüzü içeren bölgeyi kaydedin
-            # face_roi = frame[y:y+h, x:x+w]
-            # cv2.imwrite('yuz_resmi.png', frame)
-            print('face dedected')
-        # Çerçeveyi göster
-        # cv2.imshow('Yuz Tespiti Uygulamasi', frame)
+        if config.DEBUG:
+            cv2.imshow('test-face-detected', frame)
 
         # 'q' tuşuna basarak uygulamadan çıkın
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -50,6 +57,7 @@ def detect_face_and_save_image():
     if cap:
         cap.release()
     cv2.destroyAllWindows()
+    return detected_faces_list
 
 
 if __name__ == "__main__":

@@ -2,8 +2,11 @@ from pathlib import Path
 import logging
 import os
 
+
 MONGO_DB_URL: str = os.getenv('MONGO_DB_URL')
 MONGO_DB_NAME: str = os.getenv('MONGO_DB_NAME')
+
+API_QUERY_HOST: str = os.getenv('API_QUERY_HOST')
 
 BASE_DIR = Path(__file__).resolve().parent
 APP_ICO = BASE_DIR.joinpath('web_browser.ico')
@@ -18,4 +21,7 @@ TEST_VIDEO_SOURCE: str = 'http://192.168.0.102:8080/video'
 
 with open('style.css', 'r') as __css_ref:
     APP_CSS: str = __css_ref.read()
+
+SESSION_ID: str | None = None
+
 

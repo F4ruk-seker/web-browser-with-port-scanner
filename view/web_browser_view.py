@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
 from urllib.parse import urlparse
-
+from database import add_browser_history
 from .port_scanner_view import PortScanWindow
 import config
 
@@ -90,6 +90,7 @@ class MyWebBrowser(QMainWindow):
 
     def url_change(self, url):
         self.url_bar.setText(url.toString())
+        add_browser_history(url.toString())
 
     def trigger_go_btn(self, *args, **kwargs):
         url = self.url_bar.text()
