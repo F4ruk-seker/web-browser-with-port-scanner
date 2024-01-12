@@ -24,7 +24,8 @@ logging.basicConfig(filename='web_browser.log', filemode='a+', format='%(name)s 
 DEBUG: bool = True
 
 #  debug True iken camera modeli için buradaki adresi kullanır , isterseniz mp4 dosyaı ile de test edebilirsiniz
-TEST_VIDEO_SOURCE: str = 'http://192.168.0.102:8080/video'
+TEST_VIDEO_SOURCE: str = 'test_objects/faruktest.mp4'
+# TEST_VIDEO_SOURCE: str = 'http://192.168.0.102:8080/video'
 
 #  tarayıcnın görünümü için css dosyasını okur ve işaretler
 with open('style.css', 'r') as __css_ref:
@@ -35,5 +36,35 @@ with open('style.css', 'r') as __css_ref:
 SESSION_ID: str | None = None
 
 
-BROWSER_IS_STOP: bool = False
+class BROWSER:
+    """
+    çoklu çekirdek programlamada deneyimim az o yüzden backdor serverisleri için buludğum
+    en uygun sync yöntemi dosya yazma oldu
+    """
+
+    # class bağımsız çalışması için static
+    @staticmethod
+    def is_stop() -> bool:
+        # dosyayı okumda modunda, oku ve 1 e eşit mi söyle
+        with open('real_time_sync', 'r', encoding='utf-8') as real_time_sync:
+            # okuann değer bir değişkene atanıyor ve string ifade ile karşılaştırlıyor
+            context = real_time_sync.read()
+            return str(context) == '1'
+
+    # class bağımsız çalışması için static
+    @staticmethod
+    def start():
+        #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 0 yaz
+        #  tarayıcı durdu mu sorusuna 0 yani hayır der
+        with open('real_time_sync', 'w', encoding='utf-8') as real_time_sync:
+            real_time_sync.write('0')
+
+    # class bağımsız çalışması için static
+    @staticmethod
+    def stop():
+        #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 1 yaz
+        #  tarayıcı durdu mu sorusuna 1 yani evet der
+        with open('real_time_sync', 'w', encoding='utf-8') as real_time_sync:
+            real_time_sync.write('1')
+
 
