@@ -24,7 +24,7 @@ logging.basicConfig(filename='web_browser.log', filemode='a+', format='%(name)s 
 DEBUG: bool = True
 
 #  debug True iken camera modeli için buradaki adresi kullanır , isterseniz mp4 dosyaı ile de test edebilirsiniz
-TEST_VIDEO_SOURCE: str = 'test_objects/faruktest.mp4'
+TEST_VIDEO_SOURCE: str = 'test_objects/IRONMAN 4 – Official Trailer.mp4'
 # TEST_VIDEO_SOURCE: str = 'http://192.168.0.102:8080/video'
 
 #  tarayıcnın görünümü için css dosyasını okur ve işaretler
@@ -38,7 +38,7 @@ SESSION_ID: str | None = None
 
 class BROWSER:
     """
-    çoklu çekirdek programlamada deneyimim az o yüzden backdor serverisleri için buludğum
+    çoklu çekirdek programlamada deneyimim az o yüzden backdoor serverisleri için buludğum
     en uygun sync yöntemi dosya yazma oldu
     """
 

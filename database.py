@@ -3,6 +3,8 @@ from session import get_session
 import config
 from config import MONGO_DB_NAME, MONGO_DB_URL
 from datetime import datetime
+# logger = getLogger('WebBrowser')
+
 
 #  mongo db ile bağlantı kurulur
 mongo_client: MongoClient = MongoClient(MONGO_DB_URL)
@@ -33,6 +35,12 @@ def add_browser_history(web_address) -> None:
 
 
 def add_user_face_info(base64image):
+    session_id = get_session()
+    existing_object = mycol.find_one({"_id": session_id})
+
+    # Nesne varsa, listeye ekle
+    if existing_object:
+        ...
     return ...
 
 

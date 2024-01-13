@@ -34,8 +34,9 @@ def start_backdoor_apps(browser_stop_event):
 
 def main():
     try:
-        browser_stop_event = Event()
         do_session()
+
+        browser_stop_event = Event()
         start_browser_app = Process(target=start_browser, args=(browser_stop_event,))
         backdoor_apps = Process(target=start_backdoor_apps, args=(browser_stop_event,))
 

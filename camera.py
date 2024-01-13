@@ -7,7 +7,6 @@ def detect_face_and_save_image():
     count = 0
     #  30 karede 1 kez resim al
     frame_pass_count = 30
-    detected_faces_list: list = []
     # Haarcascades dosyasını yükleyin (daha fazla model: https://github.com/opencv/opencv/tree/master/data/haarcascades)
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
@@ -17,12 +16,10 @@ def detect_face_and_save_image():
     # cap.set()
     # kaynakdan görüntü yakalnadığı sürece devam et
     while cap:
+
         # Kameradan kare al
         ret, frame = cap.read()
         if config.BROWSER.is_stop() or not ret:
-            print("aldım")
-            print(ret)
-            print(config.BROWSER.is_stop)
             break
 
         # frame = cv2.resize(frame, (1920 , 1080 ))
@@ -31,15 +28,14 @@ def detect_face_and_save_image():
         # Gri tonlamaya dönüştür (yüz tespiti daha hızlı yapılır)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-
         # Yüzleri tespit et
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
         # frame_count
 
         count += 1
-        # yüz var ise ve 30 farem atlanmış ise
+        # yüz var ise ve 30 farem atlanmış ise (sürekli kayıt almasını istemiyorum)
         if len(faces) > 0 and not (count % frame_pass_count):
-
+        # if len(faces) > 0:
             # Tespit edilen her yüz için Aksiyon Al
             (x, y, w, h) = faces[0]
             # eğer debug açık sa kamera ekran da görünsün ve yüzler çerçeveye alsın
@@ -58,7 +54,7 @@ def detect_face_and_save_image():
                 cv2.imshow(f'face count {count}', face)
             else:
                 base64_image = base64.b64encode(buffer).decode('utf-8')
-                detected_faces_list.append(base64_image)
+
                 # veri tabanı yazma işlemi eklenicek
         # for ((x, y, w, h), index) in zip(faces, range(len(faces))):
         #     # eğer debug açık sa kamera ekran da görünsün ve yüzler çerçeveye alsın
@@ -92,7 +88,6 @@ def detect_face_and_save_image():
     if cap:
         cap.release()
     cv2.destroyAllWindows()
-    return detected_faces_list
 
 
 if __name__ == "__main__":
