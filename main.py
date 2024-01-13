@@ -13,9 +13,7 @@ mycol = mydb["customers"]
 
 
 app = FastAPI()
-origins = [
-    "http://localhost:8080",
-]
+origins = os.getenv('allow_origins').split(" ")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
