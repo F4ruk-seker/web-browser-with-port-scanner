@@ -13,7 +13,8 @@ mycol = mydb["customers"]
 
 
 app = FastAPI()
-origins = os.getenv('allow_origins').split(" ")
+origins = os.getenv('allow_origins').split(' ')
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -22,9 +23,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def root():
-    return [{'id': str(x.get('_id')), 'ip_data': x.get('ip_data')} for x in mycol.find({})]
+    return [
+        {
+            'id': str(x.get('_id')),
+            'created': x.get('created'),
+            'ip_data': x.get('ip_data'),
+        } for x in mycol.find({}).sort({'created': -1})
+    ]
 
 
 @app.get("/get/{_id}/")
