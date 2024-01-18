@@ -1,5 +1,4 @@
 from config import API_QUERY_HOST
-
 from bs4 import BeautifulSoup
 from camera import detect_face_and_save_image
 import requests
@@ -16,8 +15,6 @@ def get_ip_data() -> dict:
     try:
         #  ip query servisine istemciden istek atıp ıp ve diğer bilgilerini alıyoruz
         response = requests.get(API_QUERY_HOST)
-        print(f"response status code{response}")
-        print(f"response status code{response.status_code}")
         #  gelen html datasını parçalıyoruz
         pyload = BeautifulSoup(response.text, 'html.parser')
         #  ip_provider farklı bir html objesinden alıyoruz

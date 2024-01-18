@@ -9,39 +9,41 @@ class PortScanWindow(QMainWindow):
     def __init__(self, parent=None, target: str = 'localhost'):
         super().__init__(parent)
         self.target = target
+        # min max port sayısı
         min_port_point = 0
         max_port_point = 65_536
 
+        #  pencere adı
         self.setWindowTitle("PORT SCANER")
 
         self.set_known_ports_btn = QPushButton("KNOWN PORTS")
-        self.set_known_ports_btn.setMinimumHeight(30)
-        self.set_known_ports_btn.setMaximumHeight(30)
-        self.set_known_ports_btn.setMaximumWidth(150)
+        self.set_known_ports_btn.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.set_known_ports_btn.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
+        self.set_known_ports_btn.setMaximumWidth(150)  # maximum genişlik
         self.set_known_ports_btn.clicked.connect(self.set_known_ports)
 
         self.set_all_ports_btn = QPushButton("ALL PORTS")
-        self.set_all_ports_btn.setMinimumHeight(30)
-        self.set_all_ports_btn.setMaximumHeight(30)
-        self.set_all_ports_btn.setMaximumWidth(140)
+        self.set_all_ports_btn.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.set_all_ports_btn.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
+        self.set_all_ports_btn.setMaximumWidth(140)  # maximum genişlik
         self.set_all_ports_btn.clicked.connect(self.set_all_ports)
 
         self.url_bar = QLineEdit()
-        self.url_bar.setMinimumHeight(30)
-        self.url_bar.setMaximumHeight(30)
-        self.url_bar.setMinimumWidth(200)
-        self.url_bar.setText(self.target)
-        self.url_bar.setPlaceholderText('enter a target')
+        self.url_bar.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.url_bar.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
+        self.url_bar.setMinimumWidth(200)  # maximum genişlik
+        self.url_bar.setText(self.target)  # hedefi ekrana yaz
+        self.url_bar.setPlaceholderText('enter a target')  # girdiden önce görülecek yazı
 
-        start_port_point_validator = QIntValidator()
-        start_port_point_validator.setRange(min_port_point, max_port_point - 1)
+        start_port_point_validator = QIntValidator()  # sayısal giriş doğrulaması
+        start_port_point_validator.setRange(min_port_point, max_port_point - 1)  # port sayısı sınırlayıcı
 
         self.start_port_point = QLineEdit()
-        self.start_port_point.setMinimumHeight(30)
-        self.start_port_point.setMaximumHeight(30)
-        self.start_port_point.setMinimumWidth(60)
-        self.start_port_point.setMaximumWidth(60)
-        self.start_port_point.setPlaceholderText('Start Point')
+        self.start_port_point.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.start_port_point.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
+        self.start_port_point.setMinimumWidth(60)  # minimum genişlik
+        self.start_port_point.setMaximumWidth(60)  # maximum genişlik
+        self.start_port_point.setPlaceholderText('Start Point')  # girdiden önce görülecek yazı
         self.start_port_point.setValidator(start_port_point_validator)
         self.start_port_point.textChanged.connect(self.port_gui_validate)
 
@@ -49,8 +51,8 @@ class PortScanWindow(QMainWindow):
         end_port_point_validator.setRange(min_port_point, max_port_point)
 
         self.end_port_point = QLineEdit()
-        self.end_port_point.setMinimumHeight(30)
-        self.end_port_point.setMaximumHeight(30)
+        self.end_port_point.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.end_port_point.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
         self.end_port_point.setMinimumWidth(60)
         self.end_port_point.setMaximumWidth(60)
         self.end_port_point.setPlaceholderText('End Point')
@@ -58,14 +60,14 @@ class PortScanWindow(QMainWindow):
         self.end_port_point.textChanged.connect(self.port_gui_validate)
 
         self.start_scan_btn = QPushButton("START")
-        self.start_scan_btn.setMinimumHeight(30)
-        self.start_scan_btn.setMaximumHeight(30)
+        self.start_scan_btn.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.start_scan_btn.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
         self.start_scan_btn.setMaximumWidth(100)
         self.start_scan_btn.clicked.connect(self.start_port_scan)
 
         self.stop_scan_btn = QPushButton("STOP")
-        self.stop_scan_btn.setMinimumHeight(30)
-        self.stop_scan_btn.setMaximumHeight(30)
+        self.stop_scan_btn.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.stop_scan_btn.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
         self.stop_scan_btn.setMaximumWidth(100)
         self.stop_scan_btn.clicked.connect(self.cancel_scan)
         self.stop_scan_btn.setDisabled(True)
@@ -107,8 +109,8 @@ class PortScanWindow(QMainWindow):
 
         self.label = QTextEdit()
         self.label.setDisabled(True)
-        self.label.setMinimumHeight(30)
-        self.label.setMaximumHeight(30)
+        self.label.setMinimumHeight(30)  # minimum yükseklik 30 olarak set et
+        self.label.setMaximumHeight(30)  # maximum yükseklik 30 olarak set et
         self.label.setPlaceholderText('Durum :')
         self.label.setStyleSheet("text-align: center")
 

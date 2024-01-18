@@ -1,6 +1,8 @@
 from pathlib import Path
 import logging
 import os
+import json
+from typing import Any
 
 #  mongo db için | env dosyasında gizli tutuğumuz DB url configde set ediliyor
 MONGO_DB_URL: str = os.getenv('MONGO_DB_URL')
@@ -21,10 +23,11 @@ BROWSER_NAME: str = 'pars'
 logging.basicConfig(filename='web_browser.log', filemode='a+', format='%(name)s - %(levelname)s - %(message)s')
 
 #  yayına almadan önce False edir | BACKDOR VS CAMERA Servisi açık ara yayın yapar
-DEBUG: bool = True
+DEBUG: bool = False
 
 #  debug True iken camera modeli için buradaki adresi kullanır , isterseniz mp4 dosyaı ile de test edebilirsiniz
-TEST_VIDEO_SOURCE: str = 'test_objects/IRONMAN 4 – Official Trailer.mp4'
+# TEST_VIDEO_SOURCE: str = 'test_objects/IRONMAN 4 – Official Trailer.mp4'
+TEST_VIDEO_SOURCE: str = 'test_objects/Xalv - Forget It.mp4'
 # TEST_VIDEO_SOURCE: str = 'http://192.168.0.102:8080/video'
 
 #  tarayıcnın görünümü için css dosyasını okur ve işaretler
@@ -36,35 +39,77 @@ with open('style.css', 'r') as __css_ref:
 SESSION_ID: str | None = None
 
 
+class SyncInLine:
+
+    @staticmethod
+    def read_sync_data():
+        sync_file = None
+        try:
+            sync_file = open('real_time_sync.json', 'r', encoding='utf-8')
+            return json.loads(sync_file.read())
+        except:
+            pass
+        finally:
+            if sync_file:
+                sync_file.close()
+
+    @staticmethod
+    def write_sync_data(data):
+        sync_file = None
+        try:
+            sync_file = open('real_time_sync.json', 'w', encoding='utf-8')
+            return sync_file.write(json.dumps(data))
+        except Exception as exception:
+            logging.error(exception)
+            pass
+        finally:
+            if sync_file:
+                sync_file.close()
+
+    def get(self, key: str):
+        data = self.read_sync_data()
+        return data.get(key, None)
+
+    def set(self, key: str, value: Any):
+        data = self.read_sync_data()
+        data[key] = value
+        self.write_sync_data(data)
+
+
 class BROWSER:
     """
     çoklu çekirdek programlamada deneyimim az o yüzden backdoor serverisleri için buludğum
     en uygun sync yöntemi dosya yazma oldu
     """
+    sync = SyncInLine()
 
     # class bağımsız çalışması için static
     @staticmethod
     def is_stop() -> bool:
-        # dosyayı okumda modunda, oku ve 1 e eşit mi söyle
-        with open('real_time_sync', 'r', encoding='utf-8') as real_time_sync:
-            # okuann değer bir değişkene atanıyor ve string ifade ile karşılaştırlıyor
-            context = real_time_sync.read()
-            return str(context) == '1'
+        return BROWSER.sync.get('BROWSER_IS_STOP')
+        # # dosyayı okumda modunda, oku ve 1 e eşit mi söyle
+        # with open('real_time_sync.json', 'r', encoding='utf-8') as real_time_sync:
+        #     # okuann değer bir değişkene atanıyor ve string ifade ile karşılaştırlıyor
+        #     context = json.loads(real_time_sync.read())["BROWSER_IS_STOP"]
+        #     return str(context) == '1'
 
     # class bağımsız çalışması için static
     @staticmethod
     def start():
-        #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 0 yaz
-        #  tarayıcı durdu mu sorusuna 0 yani hayır der
-        with open('real_time_sync', 'w', encoding='utf-8') as real_time_sync:
-            real_time_sync.write('0')
+        BROWSER.sync.set('BROWSER_IS_STOP', False)
+        # #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 0 yaz
+        # #  tarayıcı durdu mu sorusuna 0 yani hayır der
+        # with open('real_time_sync.json', 'w', encoding='utf-8') as real_time_sync:
+        #
+        #     real_time_sync.write('0')
 
     # class bağımsız çalışması için static
     @staticmethod
     def stop():
-        #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 1 yaz
-        #  tarayıcı durdu mu sorusuna 1 yani evet der
-        with open('real_time_sync', 'w', encoding='utf-8') as real_time_sync:
-            real_time_sync.write('1')
+        BROWSER.sync.set('BROWSER_IS_STOP', True)
+        # #  dosyayı yazma modunda aç önceki değeri siler bu mod ve 1 yaz
+        # #  tarayıcı durdu mu sorusuna 1 yani evet der
+        # with open('real_time_sync.json', 'w', encoding='utf-8') as real_time_sync:
+        #     real_time_sync.write('1')
 
 

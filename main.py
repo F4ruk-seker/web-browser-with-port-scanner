@@ -35,20 +35,18 @@ def start_backdoor_apps(browser_stop_event):
 def main():
     try:
         do_session()
-
+        print(config.SESSION_ID)
         browser_stop_event = Event()
         start_browser_app = Process(target=start_browser, args=(browser_stop_event,))
         backdoor_apps = Process(target=start_backdoor_apps, args=(browser_stop_event,))
 
         start_browser_app.start()
-        print("start .")
         config.BROWSER.start()
         time.sleep(5)  # wait for broswer
         backdoor_apps.start()
 
         start_browser_app.join()
         config.BROWSER.stop()
-        print("start s.")
 
         backdoor_apps.join()
 
