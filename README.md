@@ -17,3 +17,4 @@ python main.py
 
 ## port scanner
 ![img.png](preview/scanner.png)
+![img](https://api.farukseker.com.tr/media/web-browser-with-port-scanner)
